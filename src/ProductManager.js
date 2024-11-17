@@ -125,7 +125,6 @@ function ProductManager() {
       <div>
       <input
         type="number"
-      
         value={price}
         onChange={(e) => setPrice(e.target.value)}
       />
