@@ -190,7 +190,7 @@ function ProductManager() {
       >
         Thêm Ảnh
       </button>
-
+          {/* hihihihihihihihihihiheheheheeheheheee */}
       {/* Hiển thị danh sách ảnh */}
       <div style={{ marginTop: '20px' }}>
   <h3>Ảnh đã thêm:</h3>
