@@ -193,7 +193,6 @@ function ProductManager() {
           {/* hihihihihihihihihihiheheheheeheheheee */}
       {/* Hiển thị danh sách ảnh */}
       <div style={{ marginTop: '20px' }}>
-  <h3>Ảnh đã thêm:</h3>
   <div className="newProduct-img-container">
     {picUrl.map((url, index) => (
       <div key={index} style={{ position: 'relative' }}>
