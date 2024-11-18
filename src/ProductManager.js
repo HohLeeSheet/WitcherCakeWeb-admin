@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../src/firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
 import './ProductManager.css';
-
 function ProductManager() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [title, setTitle] = useState('');
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState();
   const [description, setDescription] = useState('');
-  const [rating, setRating] = useState('');
+  const [rating, setRating] = useState();
   const [imgUrl, setImgUrl] = useState('');
   const [picUrl, setPicUrl] = useState([]);
   const [categoryRef, setCategoryRef] = useState(null);
@@ -114,78 +113,108 @@ function ProductManager() {
       <h2>Product Manager</h2>
 
       <div>
-      <input
-        type="text"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-      />
-      <label>Title</label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <label>Title</label>
       </div>
 
       <div>
-      <input
-        type="number"
-        value={price}
-        onChange={(e) => setPrice(e.target.value)}
-      />
-    
+        <input
+          type="number"
+          value={price}
+          onChange={(e) => {
+            const value = parseFloat(e.target.value); // Chuyển đổi giá trị nhập sang số thực
+            setPrice(isNaN(value) ? 0 : value); // Nếu không phải số, đặt giá trị là 0
+          }}
+        />
       </div>
 
       <div>
-      <input
-        type="number"
-        value={rating}
-        onChange={(e) => setRating(e.target.value)}
-      />
-      <label>Rating</label>
+        <input
+          type="number"
+          value={rating}
+          onChange={(e) => {
+            const value = parseFloat(e.target.value); // Chuyển đổi giá trị nhập sang số thực
+            setRating(isNaN(value) ? 0 : value); // Nếu không phải số, đặt giá trị là 0
+
+          }}
+        />
+        <label>Rating</label>
       </div>
 
       <div>
-      <select
-        value={categoryRef?.id || ''} // Nếu có categoryRef, lấy id làm giá trị của select, nếu không, chọn giá trị rỗng
-        onChange={(e) => {
-          const selectedCategory = categories.find(cat => cat.id === e.target.value);
-          setCategoryRef(selectedCategory ? selectedCategory.ref : null); // Cập nhật categoryRef với tham chiếu của danh mục
-        }}
-      >
-        <option value="">Chọn loại sản phẩm</option>
-        {categories.map((category) => (
-          <option key={category.id} value={category.id}>
-            {category.name} {/* Hiển thị tên danh mục */}
-          </option>
-        ))}
-      </select>
+        <select
+          value={categoryRef?.id || ''} // Nếu có categoryRef, lấy id làm giá trị của select, nếu không, chọn giá trị rỗng
+          onChange={(e) => {
+            const selectedCategory = categories.find(cat => cat.id === e.target.value);
+            setCategoryRef(selectedCategory ? selectedCategory.ref : null); // Cập nhật categoryRef với tham chiếu của danh mục
+          }}
+        >
+          <option value="">Chọn loại sản phẩm</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name} {/* Hiển thị tên danh mục */}
+            </option>
+          ))}
+        </select>
 
       </div>
 
       <div>
-      <textarea
-       
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-      >
-      </textarea>
-      <label>Description</label>
+        <textarea
+
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        >
+        </textarea>
+        <label>Description</label>
       </div>
 
       <div>
-      <input
-        type="text"
-        
-        value={imgUrl}
-        onChange={(e) => setImgUrl(e.target.value)}
-      />
-      <label>Image URL</label>
+        <input
+          type="text"
+          value={imgUrl}
+          onChange={(e) => setImgUrl(e.target.value)}
+        />
+        <label>Image URL</label>
       </div>
       <button
         onClick={() => {
-          setPicUrl([...picUrl, imgUrl]); // Thêm URL vào mảng
-          setImgUrl(''); // Xóa trường nhập sau khi thêm
+          if (imgUrl.trim() !== "") { // Kiểm tra xem URL không trống
+            setPicUrl([...picUrl, imgUrl]); // Thêm URL vào mảng
+            setImgUrl(''); // Xóa trường nhập sau khi thêm
+          }
         }}
       >
         Thêm Ảnh
       </button>
-      
+
+      {/* Hiển thị danh sách ảnh */}
+      <div style={{ marginTop: '20px' }}>
+  <h3>Ảnh đã thêm:</h3>
+  <div className="newProduct-img-container">
+    {picUrl.map((url, index) => (
+      <div key={index} style={{ position: 'relative' }}>
+        <button
+          className="btnDelete"
+          onClick={() => setPicUrl(picUrl.filter((_, i) => i !== index))}
+        >
+          x
+        </button>
+        <img
+          className="newProduct-img"
+          src={url}
+          alt={`Ảnh ${index + 1}`}
+        />
+      </div>
+    ))}
+  </div>
+</div>
+
+
       <button onClick={editingId ? updateProduct : addProduct}>
         {editingId ? "Update Product" : "Add Product"}
       </button>
@@ -198,7 +227,7 @@ function ProductManager() {
             <p>Category: {product.categoryName || 'No Category'}</p>
             <div class="img-container">
               {product.picUrl && product.picUrl.map((url, index) => (
-                <img key={index} src={url} alt={`Ảnh ${index + 1}`} style={{ width: '150px', height: '150px', objectFit: 'cover', margin: '5px'  }} />
+                <img key={index} src={url} alt={`Ảnh ${index + 1}`} style={{ objectFit: 'cover', margin: '5px' }} />
               ))}
             </div>
             <button onClick={() => editProduct(product)}>Edit</button>
