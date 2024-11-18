@@ -48,7 +48,7 @@ label {
     pointer-events: none;
     background-color: rgb(255, 255, 255);
     box-shadow: inset;
-    
+    transition: 0.2s ease;
 }
 
 input:not([value=""]) ~ label,

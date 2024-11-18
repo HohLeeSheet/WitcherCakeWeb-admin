@@ -165,7 +165,6 @@ function ProductManager() {
 
       <div>
         <textarea
-
           value={description}
           onChange={(e) => setDescription(e.target.value)}
         >
