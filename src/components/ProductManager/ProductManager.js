@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { db } from '../src/firebase';
+import { db } from '../../firebase';
 import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
 import './ProductManager.css';
+import axios from 'axios';
 function ProductManager() {
   const [products, setProducts] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -13,6 +14,7 @@ function ProductManager() {
   const [picUrl, setPicUrl] = useState([]);
   const [categoryRef, setCategoryRef] = useState(null);
   const [editingId, setEditingId] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   // Hàm để lấy tên loại sản phẩm từ `reference`
   const fetchCategoryName = async (categoryRef) => {
@@ -53,29 +55,66 @@ function ProductManager() {
   // Thêm sản phẩm
   const addProduct = async () => {
     if (title && price && categoryRef) {
-      const productsCollection = collection(db, 'Products');
-      await addDoc(productsCollection, {
-        title,
-        price,
-        description,
-        rating,
-        picUrl,
-        categoryID: categoryRef,
-      });
-      setTitle('');
-      setPrice(0);
-      setDescription('');
-      setRating(0);
-      setPicUrl([]);
-      setCategoryRef(null);
+      try {
+        const productsCollection = collection(db, 'Products');
+        // Thêm sản phẩm vào Firestore và lấy Document Reference
+        const newProductRef = await addDoc(productsCollection, {
+          title,
+          price,
+          description,
+          rating,
+          picUrl,
+          categoryID: categoryRef,
+        });
+
+        // Tạo đối tượng sản phẩm mới
+        const newProduct = {
+          id: newProductRef.id,
+          title,
+          price,
+          description,
+          rating,
+          picUrl,
+          categoryID: categoryRef,
+          categoryName: categories.find(cat => cat.ref === categoryRef)?.name || 'No Category',
+        };
+
+        // Thêm sản phẩm vào đầu danh sách
+        setProducts((prevProducts) => [newProduct, ...prevProducts]);
+
+        // Reset các trường input
+        setTitle('');
+        setPrice(0);
+        setDescription('');
+        setRating(0);
+        setPicUrl([]);
+        setCategoryRef(null);
+      } catch (error) {
+        console.error('Lỗi khi thêm sản phẩm:', error);
+        alert('Không thể thêm sản phẩm. Vui lòng thử lại!');
+      }
+    } else {
+      alert('Vui lòng nhập đủ thông tin sản phẩm và chọn danh mục!');
     }
   };
 
+
   // Xóa sản phẩm
   const deleteProduct = async (id) => {
-    const productDoc = doc(db, 'Products', id);
-    await deleteDoc(productDoc);
+    try {
+      const productDoc = doc(db, 'Products', id);
+      await deleteDoc(productDoc); // Xóa sản phẩm khỏi Firestore
+
+      // Cập nhật danh sách sản phẩm (loại bỏ sản phẩm vừa xóa)
+      setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
+
+      alert('Xóa sản phẩm thành công!');
+    } catch (error) {
+      console.error('Lỗi khi xóa sản phẩm:', error);
+      alert('Không thể xóa sản phẩm. Vui lòng thử lại!');
+    }
   };
+
 
   // Chỉnh sửa sản phẩm
   const editProduct = (product) => {
@@ -108,10 +147,31 @@ function ProductManager() {
     }
   };
 
+  const uploadToCloudinary = async (file) => {
+    setIsUploading(true); // Bắt đầu trạng thái loading
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "withershop");
+
+    try {
+      const response = await axios.post(
+        `https://api.cloudinary.com/v1_1/dot3j50a9/image/upload`,
+        formData
+      );
+      return response.data.secure_url;
+    } catch (error) {
+      console.error("Lỗi tải ảnh lên Cloudinary:", error.response || error);
+      alert(error.response?.data?.error?.message || "Lỗi không xác định khi tải ảnh!");
+      return null;
+    }
+    finally {
+      setIsUploading(false); // Kết thúc trạng thái loading
+    }
+  };
+
   return (
     <div>
       <h2>Product Manager</h2>
-
       <div>
         <input
           type="text"
@@ -173,45 +233,66 @@ function ProductManager() {
       </div>
 
       <div>
-        <input
-          type="text"
-          value={imgUrl}
-          onChange={(e) => setImgUrl(e.target.value)}
-        />
-        <label>Image URL</label>
+        <div>
+          <h4>Chọn ảnh từ file</h4>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={async (e) => {
+              const file = e.target.files[0];
+              if (file) {
+                const previewUrl = URL.createObjectURL(file); // Tạo URL tạm để hiển thị
+                setPicUrl((prev) => [...prev, previewUrl]); // Hiển thị ảnh tạm thời
+
+                try {
+                  const uploadedUrl = await uploadToCloudinary(file); // Tải lên Cloudinary
+                  if (uploadedUrl) {
+                    setPicUrl((prev) =>
+                      prev.map((url) => (url === previewUrl ? uploadedUrl : url))
+                    ); // Thay thế URL tạm bằng URL từ Cloudinary
+                  }
+                } catch (error) {
+                  console.error("Error uploading file:", error);
+                }
+              }
+            }}
+          />
+
+        </div>
+        <button
+          onClick={() => {
+            if (imgUrl.trim() !== "") { // Kiểm tra xem URL không trống
+              setPicUrl([...picUrl, imgUrl]); // Thêm URL vào mảng
+              setImgUrl(''); // Xóa trường nhập sau khi thêm
+            }
+          }}
+        >
+          Thêm Ảnh
+        </button>
       </div>
-      <button
-        onClick={() => {
-          if (imgUrl.trim() !== "") { // Kiểm tra xem URL không trống
-            setPicUrl([...picUrl, imgUrl]); // Thêm URL vào mảng
-            setImgUrl(''); // Xóa trường nhập sau khi thêm
-          }
-        }}
-      >
-        Thêm Ảnh
-      </button>
-          {/* hihihihihihihihihihiheheheheeheheheee */}
+
+      {/* hihihihihihihihihihiheheheheeheheheee */}
       {/* Hiển thị danh sách ảnh */}
       <div style={{ marginTop: '20px' }}>
-  <div className="newProduct-img-container">
-    {picUrl.map((url, index) => (
-      <div key={index} style={{ position: 'relative' }}>
-        <button
-          className="btnDelete"
-          onClick={() => setPicUrl(picUrl.filter((_, i) => i !== index))}
-        >
-          x
-        </button>
-        <img
-          className="newProduct-img"
-          src={url}
-          alt={`Ảnh ${index + 1}`}
-        />
+        <div className="newProduct-img-container">
+          {picUrl.map((url, index) => (
+            <div key={index} style={{ position: 'relative' }}>
+              <button
+                className="btnDelete"
+                onClick={() => setPicUrl(picUrl.filter((_, i) => i !== index))}
+              >
+                x
+              </button>
+              <img
+                className="newProduct-img"
+                src={url}
+                alt={`Ảnh ${index + 1}`}
+              />
+            </div>
+          ))}
+        </div>
       </div>
-    ))}
-  </div>
-</div>
-{/* jhvjhvghvhgvhgvhgvhgvhgvhggfdgfcikhiv */}
+      {/* jhvjhvghvhgvhgvhgvhgvhgvhggfdgfcikhiv */}
 
       <button onClick={editingId ? updateProduct : addProduct}>
         {editingId ? "Update Product" : "Add Product"}
