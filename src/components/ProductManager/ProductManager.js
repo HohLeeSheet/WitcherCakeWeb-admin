@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../../firebase';
-import { collection, getDocs, addDoc, deleteDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, doc, updateDoc, getDoc } from 'firebase/firestore';
 import './ProductManager.css';
 import axios from 'axios';
 function ProductManager() {
@@ -10,7 +10,6 @@ function ProductManager() {
   const [price, setPrice] = useState();
   const [description, setDescription] = useState('');
   const [rating, setRating] = useState();
-  const [imgUrl, setImgUrl] = useState('');
   const [picUrl, setPicUrl] = useState([]);
   const [categoryRef, setCategoryRef] = useState(null);
   const [editingId, setEditingId] = useState(null);
@@ -57,6 +56,7 @@ function ProductManager() {
     if (title && price && categoryRef) {
       try {
         const productsCollection = collection(db, 'Products');
+        const time = new Date();
         // Thêm sản phẩm vào Firestore và lấy Document Reference
         const newProductRef = await addDoc(productsCollection, {
           title,
@@ -64,6 +64,8 @@ function ProductManager() {
           description,
           rating,
           picUrl,
+          invisible: false,
+          createAt: time.getTime(),
           categoryID: categoryRef,
         });
 
@@ -75,6 +77,8 @@ function ProductManager() {
           description,
           rating,
           picUrl,
+          invisible: false,
+          createAt: time.getTime(),
           categoryID: categoryRef,
           categoryName: categories.find(cat => cat.ref === categoryRef)?.name || 'No Category',
         };
@@ -84,9 +88,9 @@ function ProductManager() {
 
         // Reset các trường input
         setTitle('');
-        setPrice(0);
+        setPrice();
         setDescription('');
-        setRating(0);
+        setRating();
         setPicUrl([]);
         setCategoryRef(null);
       } catch (error) {
@@ -103,11 +107,10 @@ function ProductManager() {
   const deleteProduct = async (id) => {
     try {
       const productDoc = doc(db, 'Products', id);
-      await deleteDoc(productDoc); // Xóa sản phẩm khỏi Firestore
-
-      // Cập nhật danh sách sản phẩm (loại bỏ sản phẩm vừa xóa)
-      setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
-
+      await updateDoc(productDoc, { invisible: true }); // Cập nhật trạng thái "invisible" trong Firestore
+      setProducts((prevProducts) => prevProducts.map((product) =>
+        product.id === id ? { ...product, invisible: true } : product
+      ));
       alert('Xóa sản phẩm thành công!');
     } catch (error) {
       console.error('Lỗi khi xóa sản phẩm:', error);
@@ -121,27 +124,31 @@ function ProductManager() {
     setEditingId(product.id);
     setTitle(product.title);
     setPrice(product.price);
+    setRating(product.rating);
     setDescription(product.description);
     setCategoryRef(product.categoryID);
+    setPicUrl(product.picUrl);
   };
 
   // Cập nhật sản phẩm
   const updateProduct = async () => {
     if (editingId && categoryRef) {
       const productDoc = doc(db, 'Products', editingId);
+      const time = new Date();
       await updateDoc(productDoc, {
         title,
         price,
         description,
         rating,
         picUrl,
+        createAt: time.getTime(),
         categoryID: categoryRef,
       });
       setEditingId(null);
       setTitle('');
-      setPrice(0);
+      setPrice();
       setDescription('');
-      setRating(0);
+      setRating();
       setPicUrl([]);
       setCategoryRef(null);
     }
@@ -187,7 +194,7 @@ function ProductManager() {
           value={price}
           onChange={(e) => {
             const value = parseFloat(e.target.value); // Chuyển đổi giá trị nhập sang số thực
-            setPrice(isNaN(value) ? 0 : value); // Nếu không phải số, đặt giá trị là 0
+            setPrice(isNaN(value) ? null : value); // Nếu không phải số, đặt giá trị là 0
           }}
         />
       </div>
@@ -198,7 +205,7 @@ function ProductManager() {
           value={rating}
           onChange={(e) => {
             const value = parseFloat(e.target.value); // Chuyển đổi giá trị nhập sang số thực
-            setRating(isNaN(value) ? 0 : value); // Nếu không phải số, đặt giá trị là 0
+            setRating(isNaN(value) ? null : value); // Nếu không phải số, đặt giá trị là 0
 
           }}
         />
@@ -234,44 +241,37 @@ function ProductManager() {
 
       <div>
         <div>
-          <h4>Chọn ảnh từ file</h4>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={async (e) => {
-              const file = e.target.files[0];
-              if (file) {
-                const previewUrl = URL.createObjectURL(file); // Tạo URL tạm để hiển thị
-                setPicUrl((prev) => [...prev, previewUrl]); // Hiển thị ảnh tạm thời
+          {isUploading ? (
+            <p>Đang tải ảnh lên...</p>
+          ) : (
+            <input
+              type="file"
+              accept="image/*"
+              onChange={async (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                  const previewUrl = URL.createObjectURL(file); // Tạo URL tạm để hiển thị
+                  setPicUrl((prev) => [...prev, previewUrl]); // Thêm URL tạm
 
-                try {
-                  const uploadedUrl = await uploadToCloudinary(file); // Tải lên Cloudinary
-                  if (uploadedUrl) {
-                    setPicUrl((prev) =>
-                      prev.map((url) => (url === previewUrl ? uploadedUrl : url))
-                    ); // Thay thế URL tạm bằng URL từ Cloudinary
+                  try {
+                    const uploadedUrl = await uploadToCloudinary(file); // Tải lên Cloudinary
+                    if (uploadedUrl) {
+                      // Thay URL tạm bằng URL thực
+                      setPicUrl((prev) =>
+                        prev.map((url) => (url === previewUrl ? uploadedUrl : url))
+                      );
+                    }
+                  } catch (error) {
+                    console.error("Error uploading file:", error);
                   }
-                } catch (error) {
-                  console.error("Error uploading file:", error);
                 }
-              }
-            }}
-          />
+              }}
+            />
 
+          )}
         </div>
-        <button
-          onClick={() => {
-            if (imgUrl.trim() !== "") { // Kiểm tra xem URL không trống
-              setPicUrl([...picUrl, imgUrl]); // Thêm URL vào mảng
-              setImgUrl(''); // Xóa trường nhập sau khi thêm
-            }
-          }}
-        >
-          Thêm Ảnh
-        </button>
       </div>
 
-      {/* hihihihihihihihihihiheheheheeheheheee */}
       {/* Hiển thị danh sách ảnh */}
       <div style={{ marginTop: '20px' }}>
         <div className="newProduct-img-container">
@@ -292,28 +292,40 @@ function ProductManager() {
           ))}
         </div>
       </div>
-      {/* jhvjhvghvhgvhgvhgvhgvhgvhggfdgfcikhiv */}
 
       <button onClick={editingId ? updateProduct : addProduct}>
         {editingId ? "Update Product" : "Add Product"}
       </button>
+
       <ul>
-        {products.map((product) => (
-          <li key={product.id}>
-            <h3>{product.title}</h3>
-            <p>{product.description}</p>
-            <p>Price: ${product.price}</p>
-            <p>Category: {product.categoryName || 'No Category'}</p>
-            <div class="img-container">
-              {product.picUrl && product.picUrl.map((url, index) => (
-                <img key={index} src={url} alt={`Ảnh ${index + 1}`} style={{ objectFit: 'cover', margin: '5px' }} />
+  {products
+    .slice() // Tạo một bản sao để tránh thay đổi mảng gốc
+    .sort((a, b) => new Date(b.createAt) - new Date(a.createAt)) // Sắp xếp giảm dần theo thời gian
+    .map((product) =>
+      !product.invisible ? (
+        <li key={product.id}>
+          <h3>{product.title}</h3>
+          <p>{product.description}</p>
+          <p>Price: {product.price}.000đ</p>
+          <p>Category: {product.categoryName || 'No Category'}</p>
+          <div className="img-container">
+            {product.picUrl &&
+              product.picUrl.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`Ảnh ${index + 1}`}
+                  style={{ objectFit: 'cover', margin: '5px' }}
+                />
               ))}
-            </div>
-            <button onClick={() => editProduct(product)}>Edit</button>
-            <button onClick={() => deleteProduct(product.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+          </div>
+          <button onClick={() => editProduct(product)}>Edit</button>
+          <button onClick={() => deleteProduct(product.id)}>Delete</button>
+        </li>
+      ) : null
+    )}
+</ul>
+
     </div>
   );
 }
