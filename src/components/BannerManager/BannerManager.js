@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../firebase";
+import './BannerManager.css';
 import {
   collection,
   getDocs,
@@ -106,25 +107,25 @@ function BannerManager() {
         <div style={{ marginTop: "10px" }}>
           <p>Ảnh đang tải:</p>
           <img
+            class="newImgLoading"
             src={previewUrl}
             alt="Ảnh tạm thời"
-            style={{ width: "200px", objectFit: "cover" }}
           />
         </div>
       )}
 
-      <ul>
+      <div class="banner-container">
         {banners.map((banner) => (
-          <li key={banner.id} style={{ margin: "10px 0" }}>
+          <div class="banner-item" key={banner.id}>
             <img
+              class="banner-img"
               src={banner.url}
               alt="Banner"
-              style={{ width: "200px", objectFit: "cover", margin: "5px" }}
             />
-            <button onClick={() => deleteBanner(banner.id)}>Delete</button>
-          </li>
+            <button class="delete-btn" onClick={() => deleteBanner(banner.id)}>Delete</button>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

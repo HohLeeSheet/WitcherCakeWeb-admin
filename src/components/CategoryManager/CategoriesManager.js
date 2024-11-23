@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../firebase";
+import './CategoryManager.css';
 import {
     collection,
     getDocs,
@@ -107,6 +108,7 @@ function CategoriesManager() {
             <h2>Categories Manager</h2>
             <div>
                 <input
+                    class="tieu-de"
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -129,20 +131,20 @@ function CategoriesManager() {
             </div>
             {isUploading && <p>Đang tải ảnh lên...</p>}
             {previewUrl && <img src={previewUrl} alt="Ảnh tạm thời" style={{ width: "200px" }} />}
-            <ul>
+            <div class="category-container">
                 {categories.map((category) => (
-                    <li key={category.id}>
+                    <div class="category-item" key={category.id}>
                         <h3>{category.title}</h3>
-                        <img
+                        <img class="category-img"
                             src={category.picUrl}  
                             alt="Banner"
                             style={{ width: "200px", objectFit: "cover", margin: "5px" }}
                         />
-                        <button onClick={() => editCategory(category)}>Edit</button>
-                        <button onClick={() => deleteCategory(category.id)}>Delete</button>
-                    </li>
+                        <button class="category-item-btn" onClick={() => editCategory(category)}>Edit</button>
+                        <button class="category-item-btn" onClick={() => deleteCategory(category.id)}>Delete</button>
+                    </div>
                 ))}
-            </ul>
+            </div>
         </div>
     );
 }
