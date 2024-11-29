@@ -11,6 +11,7 @@ function CustomerOrders() {
     const [orders, setOrders] = useState([]);
     const [customerName, setCustomerName] = useState("");
     const [loading, setLoading] = useState(true);
+    
 
     useEffect(() => {
         const fetchOrders = async () => {
