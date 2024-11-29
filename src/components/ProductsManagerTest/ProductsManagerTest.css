@@ -1,0 +1,20 @@
+/* global.css */
+table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th, table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  table th {
+    color: white;
+    text-align: left;
+  }
+  .dataTable{
+    position: relative;
+  }
+
+  
