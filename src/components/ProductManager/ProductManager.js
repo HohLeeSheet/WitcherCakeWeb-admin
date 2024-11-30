@@ -197,6 +197,7 @@ function ProductManager() {
             setPrice(isNaN(value) ? null : value); // Nếu không phải số, đặt giá trị là 0
           }}
         />
+        <label>Giá</label>
       </div>
 
       <div>

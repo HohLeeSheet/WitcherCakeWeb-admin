@@ -117,6 +117,15 @@ const ProductManager = () => {
           data={products.filter((product) => !product.invisible)} // Chỉ hiển thị sản phẩm "visible"
           pagination
           highlightOnHover
+          customStyles={{
+            pagination:{
+              style:{
+                margin: 0 +" auto",
+                width: "1500px",
+                marginTop: "10px"
+              }
+            }
+          }}
         />
       )}
     </div>

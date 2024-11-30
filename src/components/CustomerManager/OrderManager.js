@@ -116,6 +116,15 @@ function CustomerOrders() {
                     data={orders.filter((order) => order)} // Lọc nếu cần
                     pagination
                     highlightOnHover
+                    customStyles={{
+                        pagination:{
+                          style:{
+                            margin: 0 +" auto",
+                            width: "1500px",
+                            marginTop: "10px"
+                          }
+                        }
+                      }}
                 />
             )}
         </div>
