@@ -21,14 +21,14 @@ function App() {
         <img class="logo" src={logo} alt="Logo" />
           <Link to="/products">
           </Link>
-          <Link to="/banners">
-            <button class="nav-btn">Quản lý Banner</button>
+          <Link to="/productsTest">
+            <button class="nav-btn">Quản Lý Sản Phẩm</button>
           </Link>
           <Link to="/categories">
             <button class="nav-btn">Quản lý Danh Mục</button>
           </Link>
-          <Link to="/productsTest">
-            <button class="nav-btn">Quản Lý Sản Phẩm</button>
+          <Link to="/banners">
+            <button class="nav-btn">Quản lý Banner</button>
           </Link>
           <Link to="/customers">
             <button class="nav-btn">Khách Hàng</button>
@@ -38,6 +38,9 @@ function App() {
 
         {/* Phần định tuyến */}
         <Routes>
+          {/* Định tuyến mặc định */}
+          <Route path="/" element={<ProductManagerTest />} />
+          {/* Các phần đính tuyến khác */}
           <Route path="/products" element={<ProductManager />} />
           <Route path="/banners" element={<BannerManager />} />
           <Route path="/categories" element={<CatgoriesManager />} />

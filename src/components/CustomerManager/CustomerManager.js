@@ -62,6 +62,9 @@ function CustomerList() {
           data={customers.filter((customer) => customer)} // Chỉ hiển thị sản phẩm "visible"
           pagination
           highlightOnHover
+          paginationComponentOptions={{
+            noRowsPerPage: true, 
+          }}
           customStyles={{
             pagination:{
               style:{
