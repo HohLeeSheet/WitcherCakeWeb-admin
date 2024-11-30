@@ -3,7 +3,6 @@ import DataTable from "react-data-table-component";
 import { db } from "../../firebase";
 import { collection, getDocs, doc, updateDoc, getDoc  } from "firebase/firestore";
 import { Route, useNavigate, Routes, BrowserRouter, Link} from "react-router-dom";
-import './CustomerManager.css';
 function CustomerList() {
     const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -51,7 +50,7 @@ function CustomerList() {
         },
     ];
     return (
-      <div class="container">
+      <div>
       <h2>Quản lý khách hàng</h2>
       {loading ? (
         <p>Đang tải dữ liệu...</p>

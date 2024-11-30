@@ -20,7 +20,6 @@ function App() {
         <nav>
         <img class="logo" src={logo} alt="Logo" />
           <Link to="/products">
-            <button class="nav-btn">Quản lý Sản phẩm</button>
           </Link>
           <Link to="/banners">
             <button class="nav-btn">Quản lý Banner</button>
