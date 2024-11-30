@@ -17,4 +17,32 @@ table {
     position: relative;
   }
 
+
+/* select */
+.bEOvvC{
+  cursor: pointer;
+  height: 24px;
+  max-width: 100%;
+  user-select: none;
+  padding-left: 8px;
+  padding-right: 4px;
+  box-sizing: border-box;
+  font-size: inherit;
+  color: inherit;
+  border: none;
+  background-color: transparent;
+  appearance: none;
+  direction: ltr;
+  width: 20px;
+  text-align: center;
   
+}
+/* first, pre , next, last button */
+.eLgGMP{
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  white-space: nowrap;
+  justify-content: center;
+  
+}

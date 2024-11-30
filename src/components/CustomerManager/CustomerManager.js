@@ -3,6 +3,7 @@ import DataTable from "react-data-table-component";
 import { db } from "../../firebase";
 import { collection, getDocs, doc, updateDoc, getDoc  } from "firebase/firestore";
 import { Route, useNavigate, Routes, BrowserRouter, Link} from "react-router-dom";
+import "./CustomerManager.css"
 function CustomerList() {
     const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -64,9 +65,9 @@ function CustomerList() {
           customStyles={{
             pagination:{
               style:{
-                margin: 0 +" auto",
-                width: "1500px",
-                marginTop: "10px"
+                marginTop: "10px",
+                display: "block",
+                textAlign:"center"
               }
             }
           }}

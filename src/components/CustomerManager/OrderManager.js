@@ -11,7 +11,7 @@ function CustomerOrders() {
     const [orders, setOrders] = useState([]);
     const [customerName, setCustomerName] = useState("");
     const [loading, setLoading] = useState(true);
-    
+
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -89,7 +89,7 @@ function CustomerOrders() {
                         onClick={() => handleUpdateStatus(row.id, "Đã xác nhận")}
                         style={{
                             padding: "5px 10px",
-                            backgroundColor: "#4CAF50",
+                            backgroundColor: "#864912",
                             color: "white",
                             border: "none",
                             cursor: "pointer",
@@ -117,14 +117,14 @@ function CustomerOrders() {
                     pagination
                     highlightOnHover
                     customStyles={{
-                        pagination:{
-                          style:{
-                            margin: 0 +" auto",
-                            width: "1500px",
-                            marginTop: "10px"
-                          }
+                        pagination: {
+                            style: {
+                                marginTop: "10px",
+                                display: "block",
+                                textAlign: "center"
+                            }
                         }
-                      }}
+                    }}
                 />
             )}
         </div>

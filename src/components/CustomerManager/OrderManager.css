@@ -29,11 +29,11 @@ tr:hover {
 button {
     padding: 5px 10px;
     color: white;
-    background-color: #4CAF50;
+    background-color: #864912;
     border: none;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #864912;
 }

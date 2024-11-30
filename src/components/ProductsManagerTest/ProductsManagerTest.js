@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { db } from "../../firebase";
 import { collection, getDocs, doc, updateDoc, getDoc  } from "firebase/firestore";
-import './ProductsManagerTest.css';
 import { Route, useNavigate, Routes, BrowserRouter, Link} from "react-router-dom";
 const ProductManager = () => {
     const [products, setProducts] = useState([]);
@@ -120,9 +119,9 @@ const ProductManager = () => {
           customStyles={{
             pagination:{
               style:{
-                margin: 0 +" auto",
-                width: "1500px",
-                marginTop: "10px"
+                marginTop: "10px",
+                display: "block",
+                textAlign:"center"
               }
             }
           }}

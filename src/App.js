@@ -28,10 +28,10 @@ function App() {
             <button class="nav-btn">Quản lý Danh Mục</button>
           </Link>
           <Link to="/productsTest">
-            <button class="nav-btn">Bảng Quản Lý Sản Phẩm</button>
+            <button class="nav-btn">Quản Lý Sản Phẩm</button>
           </Link>
           <Link to="/customers">
-            <button class="nav-btn">Bảng Khách Hàng</button>
+            <button class="nav-btn">Khách Hàng</button>
           </Link>
         </nav>
         
