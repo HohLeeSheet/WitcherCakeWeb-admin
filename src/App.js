@@ -8,6 +8,7 @@ import ProductManagerTest from './components/ProductsManagerTest/ProductsManager
 import ProductDetail from './components/ProductsManagerTest/ProductDetail';
 import CustomerManager from './components/CustomerManager/CustomerManager';
 import CustomerOrder from './components/CustomerManager/OrderManager';
+import PendingOrder from './components/CustomerManager/PendingOrder';
 import logo from './img/logoCakeVip.png';
 import './App.css';
 
@@ -34,6 +35,9 @@ function App() {
           <Link to="/customers">
             <button class="nav-btn">Bảng Khách Hàng</button>
           </Link>
+          <Link to="/pending">
+            <button class="nav-btn">Bảng Khách Hàng</button>
+          </Link>
         </nav>
         
 
@@ -46,6 +50,8 @@ function App() {
           <Route path="/product/:id" element={<ProductDetail />} />
           <Route path="/customers" element={<CustomerManager/>} />
           <Route path="/customer/:customerId" element={<CustomerOrder/>} />
+          <Route path="/orders" element={<CustomerOrder/>} />
+          <Route path="/pending" element={<PendingOrder/>} />
         </Routes>
       </div>
     </Router>
