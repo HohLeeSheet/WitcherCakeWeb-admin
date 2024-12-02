@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { db } from "../../firebase";
 import { collection, getDocs, doc, updateDoc, getDoc  } from "firebase/firestore";
-import './ProductsManagerTest.css';
-import { Route, useNavigate, Routes, BrowserRouter, Link} from "react-router-dom";
+import { Route, useNavigate, Routes, Link} from "react-router-dom";
 const ProductManager = () => {
     const [products, setProducts] = useState([]);
     const [categories, setCategories] = useState([]);
@@ -70,10 +69,16 @@ const ProductManager = () => {
   // Cột hiển thị của bảng
   const columns = [
     {
-      name: "ID",
-      selector: (row) => row.id,
-      sortable: true,
-    },
+      name: "Ảnh",
+      selector: (row) => (
+        <img
+          src={row.picUrl[0]} // Sử dụng liên kết từ Cloudinary
+          alt="Ảnh sản phẩm"
+          style={{ width: "50px", height: "50px", objectFit: "cover" }} // Thiết lập kích thước ảnh
+        />
+      ),
+      sortable: false, // Vô hiệu hóa sắp xếp vì ảnh không thể so sánh trực tiếp
+    },,
     {
       name: "Tên sản phẩm",
       selector: (row) => row.title,
@@ -87,6 +92,19 @@ const ProductManager = () => {
     {
         name: "Danh mục",
         selector: (row) => row.categoryName || "Không có danh mục",
+      },
+      {
+        name: "Ngày thêm",
+        selector: (row) =>
+          new Date(row.createAt).toLocaleString("vi-VN", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+          }), // Chuyển timestamp thành định dạng ngày giờ
+        sortable: true, // Cho phép sắp xếp theo ngày
       },
     {
       name: "Hành động",
@@ -117,6 +135,18 @@ const ProductManager = () => {
           data={products.filter((product) => !product.invisible)} // Chỉ hiển thị sản phẩm "visible"
           pagination
           highlightOnHover
+          paginationComponentOptions={{
+            noRowsPerPage: true, 
+          }}
+          customStyles={{
+            pagination:{
+              style:{
+                marginTop: "10px",
+                display: "block",
+                textAlign:"center"
+              }
+            }
+          }}
         />
       )}
     </div>

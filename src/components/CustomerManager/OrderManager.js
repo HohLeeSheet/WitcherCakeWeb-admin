@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import { collection, getDocs, updateDoc, getDoc, doc } from "firebase/firestore";
-import { format } from "date-fns";
+import { format, parse, isToday } from 'date-fns';
 import { db } from "../../firebase";
 import "./OrderManager.css"
 
@@ -11,7 +11,7 @@ function CustomerOrders() {
     const [orders, setOrders] = useState([]);
     const [customerName, setCustomerName] = useState("");
     const [loading, setLoading] = useState(true);
-    
+
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -33,6 +33,8 @@ function CustomerOrders() {
                 }));
                 setLoading(false);
                 setOrders(ordersList);
+                console.log(ordersList);
+                
             }
         };
 
@@ -65,10 +67,33 @@ function CustomerOrders() {
         },
         {
             name: "Ngày tạo",
-            selector: (row) =>
-                row.createAt
-                    ? format(new Date(row.createAt.seconds * 1000), "dd/MM/yyyy")
-                    : "N/A",
+            selector: (row) => {
+                try {
+                    let date;
+
+                    if (row.createdAt && row.createdAt.toDate && typeof row.createdAt.toDate === 'function') {
+                        date = row.createdAt.toDate();
+                    }
+                
+                    
+                    // Kiểm tra nếu date hợp lệ
+                    if (date && !isNaN(date)) {
+                        const formattedDate = format(date, "dd/MM/yyyy");
+                        
+                        return (
+                            <span style={{ color: "black" }}>
+                                {formattedDate}
+                            </span>
+                        );
+                    }
+                    
+                    return <span style={{ color: "red" }}>Không xác định</span>;
+                } catch (error) {
+                    console.error("Lỗi định dạng ngày:", error);
+                    return <span style={{ color: "red" }}>Lỗi dữ liệu</span>;
+                }
+            },
+        
             sortable: true,
         },
         {
@@ -89,7 +114,7 @@ function CustomerOrders() {
                         onClick={() => handleUpdateStatus(row.id, "Đã xác nhận")}
                         style={{
                             padding: "5px 10px",
-                            backgroundColor: "#4CAF50",
+                            backgroundColor: "#864912",
                             color: "white",
                             border: "none",
                             cursor: "pointer",
@@ -116,6 +141,18 @@ function CustomerOrders() {
                     data={orders.filter((order) => order)} // Lọc nếu cần
                     pagination
                     highlightOnHover
+                    paginationComponentOptions={{
+                        noRowsPerPage: true, 
+                      }}
+                    customStyles={{
+                        pagination: {
+                            style: {
+                                marginTop: "10px",
+                                display: "block",
+                                textAlign: "center"
+                            }
+                        }
+                    }}
                 />
             )}
         </div>
