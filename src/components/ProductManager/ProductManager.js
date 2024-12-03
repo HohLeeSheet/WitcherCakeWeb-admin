@@ -221,9 +221,10 @@ function ProductManager() {
             setCategoryRef(selectedCategory ? selectedCategory.ref : null); // Cập nhật categoryRef với tham chiếu của danh mục
           }}
         >
-          <option value="">Chọn loại sản phẩm</option>
+          <option style={{color:"#625e5e"}} value="">Chọn loại sản phẩm</option>
+          <label></label>
           {categories.map((category) => (
-            <option key={category.id} value={category.id}>
+            <option style={{color:"#625e5e"}} key={category.id} value={category.id}>
               {category.name} {/* Hiển thị tên danh mục */}
             </option>
           ))}
