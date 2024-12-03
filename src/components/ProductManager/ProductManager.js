@@ -177,7 +177,7 @@ function ProductManager() {
   };
 
   return (
-    <div>
+    <div class="product-container">
       <h2>Product Manager</h2>
       <div>
         <input
@@ -185,7 +185,7 @@ function ProductManager() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <label>Title</label>
+        <label>Tên sản phẩm</label>
       </div>
 
       <div>
@@ -210,7 +210,7 @@ function ProductManager() {
 
           }}
         />
-        <label>Rating</label>
+        <label>Đánh giá</label>
       </div>
 
       <div>
@@ -237,7 +237,7 @@ function ProductManager() {
           onChange={(e) => setDescription(e.target.value)}
         >
         </textarea>
-        <label>Description</label>
+        <label>Mô tả</label>
       </div>
 
       <div>

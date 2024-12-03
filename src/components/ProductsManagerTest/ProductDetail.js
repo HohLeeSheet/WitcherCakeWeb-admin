@@ -197,7 +197,7 @@ function ProductManager() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <label>Title</label>
+        <label>Tên sản phẩm</label>
       </div>
 
       <div>
@@ -209,6 +209,7 @@ function ProductManager() {
             setPrice(isNaN(value) ? null : value); // Nếu không phải số, đặt giá trị là 0
           }}
         />
+        <label>Giá</label>
       </div>
 
       <div>
@@ -221,7 +222,7 @@ function ProductManager() {
 
           }}
         />
-        <label>Rating</label>
+        <label>Đánh giá</label>
       </div>
 
       <div>
@@ -248,7 +249,7 @@ function ProductManager() {
           onChange={(e) => setDescription(e.target.value)}
         >
         </textarea>
-        <label>Description</label>
+        <label>Mô tả</label>
       </div>
 
       <div>

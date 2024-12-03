@@ -7,6 +7,7 @@ h2 {
 /* Style cho input */
 input[type="text"],
 input[type="number"],
+input[type="password"],
 textarea,
 select {
     width: 100%;
@@ -20,6 +21,7 @@ select {
 
 input[type="text"]:hover,
 input[type="number"]:hover,
+input[type="password"]:hover,
 textarea:hover,
 select:hover {
     border-color: #606060;
@@ -28,6 +30,7 @@ select:hover {
 
 input[type="text"]:focus,
 input[type="number"]:focus,
+input[type="password"]:focus,
 textarea:focus,
 select:focus {
     border-color: #000000;
@@ -150,4 +153,8 @@ li {
 .img-container> img:hover{
     width: 175px;
     height: 175px;
+}
+
+.product-container{
+    margin-left: 20px;
 }

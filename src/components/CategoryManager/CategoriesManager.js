@@ -104,7 +104,7 @@ function CategoriesManager() {
     };
 
     return (
-        <div>
+        <div style={{marginLeft:"20px"}}>
             <h2>Categories Manager</h2>
             <div>
                 <input

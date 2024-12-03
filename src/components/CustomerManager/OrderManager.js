@@ -130,7 +130,7 @@ function CustomerOrders() {
     ];
 
     return (
-        <div>
+        <div class="order-container">
             <h2>Quản lý đơn hàng</h2>
             {loading ? (
                 <p>Đang tải dữ liệu...</p>

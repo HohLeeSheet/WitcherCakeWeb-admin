@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { db } from "../../firebase";
 import { collection, getDocs, where, query  } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
+import "./Admin.css"
 
 function LoginAdmin() {
   const [email, setEmail] = useState("");
@@ -41,7 +42,7 @@ function LoginAdmin() {
   };
 
   return (
-    <div>
+    <div class="login-container">
       <h2>Đăng Nhập</h2>
       <form onSubmit={handleLogin}>
         <div>
@@ -51,6 +52,7 @@ function LoginAdmin() {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
+          <label>Username</label>
         </div>
         <div>
           <input
@@ -59,6 +61,7 @@ function LoginAdmin() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+          <label>Password</label>
         </div>
         {error && <p style={{ color: "red" }}>{error}</p>}
         <button type="submit" disabled={loading}>

@@ -1,5 +1,5 @@
 // App.js
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import ProductManager from './components/ProductManager/ProductManager';
 import BannerManager from './components/BannerManager/BannerManager';
@@ -14,13 +14,63 @@ import logo from './img/logoCakeVip.png';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import './App.css';
 
+
+
+
 function App() {
+  const [activeButton, setActiveButton] = useState(null); 
+
+  const handleButtonClick = (button) => {
+    setActiveButton(button); 
+  };
   return (
     <Router>
       <div className="App">
         {/* Thanh điều hướng */}
-       
-        <nav>
+        <nav id="nav">
+          <img className="logo" src={logo} alt="Logo" />
+          <Link to="/productsTest">
+            <button
+              className={`nav-btn ${activeButton === 'products' ? 'active' : ''}`}
+              onClick={() => handleButtonClick('products')}
+            >
+              Quản Lý Sản Phẩm
+            </button>
+          </Link>
+          <Link to="/categories">
+            <button
+              className={`nav-btn ${activeButton === 'categories' ? 'active' : ''}`}
+              onClick={() => handleButtonClick('categories')}
+            >
+              Quản lý Danh Mục
+            </button>
+          </Link>
+          <Link to="/banners">
+            <button
+              className={`nav-btn ${activeButton === 'banners' ? 'active' : ''}`}
+              onClick={() => handleButtonClick('banners')}
+            >
+              Quản lý Banner
+            </button>
+          </Link>
+          <Link to="/customers">
+            <button
+              className={`nav-btn ${activeButton === 'customers' ? 'active' : ''}`}
+              onClick={() => handleButtonClick('customers')}
+            >
+              Khách Hàng
+            </button>
+          </Link>
+          <Link to="/pending">
+            <button
+              className={`nav-btn ${activeButton === 'pending' ? 'active' : ''}`}
+              onClick={() => handleButtonClick('pending')}
+            >
+              Đơn Hàng Cần Xác Nhận
+            </button>
+          </Link>
+        </nav>
+        {/* <nav id='nav'>
         <img class="logo" src={logo} alt="Logo" />
           <Link to="/products">
           </Link>
@@ -39,9 +89,8 @@ function App() {
           <Link to="/pending">
             <button class="nav-btn">Đơn Hàng Cần Xác Nhận</button>
           </Link>
-        </nav>
+        </nav> */}
         
-
         {/* Phần định tuyến */}
         <Routes>
           {/* Định tuyến mặc định */}
@@ -62,5 +111,6 @@ function App() {
     </Router>
   );
 }
+
 
 export default App;

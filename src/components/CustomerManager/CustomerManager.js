@@ -51,7 +51,7 @@ function CustomerList() {
         },
     ];
     return (
-      <div>
+      <div class="customer-container">
       <h2>Quản lý khách hàng</h2>
       {loading ? (
         <p>Đang tải dữ liệu...</p>

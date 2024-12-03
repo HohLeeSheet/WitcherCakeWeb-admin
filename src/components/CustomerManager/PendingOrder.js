@@ -129,7 +129,7 @@ function PendingOrders() {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
+    <div style={{marginLeft:"20px"}}>
       <h2>Quản lý đơn hàng</h2>
       <DataTable
         title="Danh sách đơn hàng"

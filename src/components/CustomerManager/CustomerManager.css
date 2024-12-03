@@ -1,6 +1,15 @@
 
+.customer-container{
+    margin-left: 20px;
+}
+.jAScFm{
+    display: flex;
+    justify-content: flex-end;
+    width: 80%;
+    position: absolute;
+}
 
-/* select */
+
 .bEOvvC{
     cursor: pointer;
     height: 24px;
@@ -19,7 +28,7 @@
     text-align: center;
     
 }
-/* first, pre , next, last button */
+
 .eLgGMP{
     display: flex;
     align-items: center;
