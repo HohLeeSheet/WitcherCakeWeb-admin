@@ -67,35 +67,13 @@ function CustomerOrders() {
         },
         {
             name: "Ngày tạo",
-            selector: (row) => {
-                try {
-                    let date;
-
-                    if (row.createdAt && row.createdAt.toDate && typeof row.createdAt.toDate === 'function') {
-                        date = row.createdAt.toDate();
-                    }
-                
-                    
-                    // Kiểm tra nếu date hợp lệ
-                    if (date && !isNaN(date)) {
-                        const formattedDate = format(date, "dd/MM/yyyy");
-                        
-                        return (
-                            <span style={{ color: "black" }}>
-                                {formattedDate}
-                            </span>
-                        );
-                    }
-                    
-                    return <span style={{ color: "red" }}>Không xác định</span>;
-                } catch (error) {
-                    console.error("Lỗi định dạng ngày:", error);
-                    return <span style={{ color: "red" }}>Lỗi dữ liệu</span>;
-                }
-            },
-        
+            selector: (row) => row.createdAt?.seconds || null, // Trả về timestamp để sắp xếp
+            format: (row) =>
+              row.createdAt && row.createdAt.seconds
+                ? format(new Date(row.createdAt.seconds * 1000), "dd/MM/yyyy HH:mm:ss")
+                : "Không xác định", // Định dạng ngày + giờ phút giây
             sortable: true,
-        },
+          },
         {
             name: "Tên khách hàng",
             selector: (row) => row.customerName,
@@ -138,7 +116,7 @@ function CustomerOrders() {
                 <DataTable
                     title="Danh sách đơn hàng"
                     columns={columns}
-                    data={orders.filter((order) => order)} // Lọc nếu cần
+                    data={orders.filter((order) => order)} 
                     pagination
                     highlightOnHover
                     paginationComponentOptions={{

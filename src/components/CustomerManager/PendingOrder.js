@@ -80,10 +80,11 @@ function PendingOrders() {
     },
     {
       name: "Ngày tạo",
-      selector: (row) =>
+      selector: (row) => row.createdAt?.seconds || null, // Trả về timestamp để sắp xếp
+      format: (row) =>
         row.createdAt && row.createdAt.seconds
-          ? format(new Date(row.createdAt.seconds * 1000), "dd/MM/yyyy")
-          : "Không xác định",
+          ? format(new Date(row.createdAt.seconds * 1000), "dd/MM/yyyy HH:mm:ss")
+          : "Không xác định", // Định dạng ngày + giờ phút giây
       sortable: true,
     },
     {
