@@ -84,7 +84,7 @@ function BannerManager() {
 
   return (
     <div style={{marginLeft:"20px"}}>
-      <h2>Banner Manager</h2>
+      <h2>Quản lý Banner</h2>
       <div>
         <h4>Chọn ảnh từ file</h4>
         <input
@@ -122,7 +122,7 @@ function BannerManager() {
               src={banner.url}
               alt="Banner"
             />
-            <button class="delete-btn" onClick={() => deleteBanner(banner.id)}>Delete</button>
+            <button class="delete-btn" onClick={() => deleteBanner(banner.id)}>Xóa</button>
           </div>
         ))}
       </div>

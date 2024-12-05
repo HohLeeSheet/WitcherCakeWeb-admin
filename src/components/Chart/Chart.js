@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../firebase";
+
 import {
   LineChart,
   Line,
@@ -102,8 +103,8 @@ function RevenueManagement() {
   );
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h2 style={{ textAlign: "center", color: "#333" }}>Quản lý Doanh thu</h2>
+    <div style={{fontFamily: "Arial, sans-serif", boxSizing:"border-box" }}>
+      <h2 style={{ textAlign: "center", color: "#333", paddingTop:"20px" }}>Thống kê Doanh thu</h2>
 
       {/* Hiển thị biểu đồ */}
       <div
@@ -117,25 +118,37 @@ function RevenueManagement() {
           padding: "20px",
         }}
       >
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={chartData}>
+        <ResponsiveContainer  style={{
+              width:"100%",
+              height:"100%"
+            }}>
+          <LineChart data={chartData}
+          style={{
+            height:"95%"
+          }}>
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="x" />
-            <YAxis
+            <XAxis  dataKey="x"/>
+            <YAxis 
               tickFormatter={(value) =>
                 new Intl.NumberFormat("vi-VN", {
                   style: "currency",
                   currency: "VND",
                 }).format(value)
               }
+              style={{
+                marginTop:"100px"
+              }}
             />
             <Tooltip
+             
               formatter={(value) =>
                 new Intl.NumberFormat("vi-VN", {
                   style: "currency",
                   currency: "VND",
                 }).format(value)
               }
+              
+              
             />
             <Legend />
             <Line
@@ -157,6 +170,7 @@ function RevenueManagement() {
           backgroundColor: "#f9f9f9",
           borderRadius: "8px",
           lineHeight: "1.8",
+          width:"100%"
         }}
       >
         <h3 style={{ color: "#555" }}>Thông tin tổng hợp</h3>

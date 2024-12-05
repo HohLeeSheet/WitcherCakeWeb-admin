@@ -59,7 +59,7 @@ function App() {
               className={`nav-btn ${activeButton === 'customers' ? 'active' : ''}`}
               onClick={() => handleButtonClick('customers')}
             >
-              Khách Hàng
+              Quản lý Khách Hàng
             </button>
           </Link>
           <Link to="/pending">
@@ -67,7 +67,7 @@ function App() {
               className={`nav-btn ${activeButton === 'pending' ? 'active' : ''}`}
               onClick={() => handleButtonClick('pending')}
             >
-              Đơn Hàng Cần Xác Nhận
+              Quản lý Đơn hàng
             </button>
           </Link>
           <Link to="/chart">

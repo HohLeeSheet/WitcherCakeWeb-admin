@@ -105,7 +105,9 @@ function CategoriesManager() {
 
     return (
         <div style={{marginLeft:"20px"}}>
-            <h2>Categories Manager</h2>
+            <h2>
+                Quản lý Danh mục
+            </h2>
             <div>
                 <input
                     class="tieu-de"
@@ -140,8 +142,8 @@ function CategoriesManager() {
                             alt="Banner"
                             style={{ width: "200px", objectFit: "cover", margin: "5px" }}
                         />
-                        <button class="category-item-btn" onClick={() => editCategory(category)}>Edit</button>
-                        <button class="category-item-btn" onClick={() => deleteCategory(category.id)}>Delete</button>
+                        <button class="category-item-btn" onClick={() => editCategory(category)}>Sửa</button>
+                        <button class="category-item-btn" onClick={() => deleteCategory(category.id)}>Xóa</button>
                     </div>
                 ))}
             </div>

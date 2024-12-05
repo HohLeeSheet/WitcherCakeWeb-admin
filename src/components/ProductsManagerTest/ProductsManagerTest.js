@@ -119,7 +119,7 @@ const ProductManager = () => {
 
   return (
     <div>
-      <h2>Quản lý sản phẩm</h2>
+      <h2>Quản lý Sản phẩm</h2>
       <Routes>
           <Route path="/products" element={<ProductManager />} />
         </Routes>

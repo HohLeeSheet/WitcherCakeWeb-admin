@@ -131,7 +131,7 @@ function PendingOrders() {
 
   return (
     <div style={{marginLeft:"20px"}}>
-      <h2>Quản lý đơn hàng</h2>
+      <h2>Quản lý Đơn hàng</h2>
       <DataTable
         title="Danh sách đơn hàng"
         columns={columns}

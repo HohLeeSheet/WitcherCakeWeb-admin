@@ -190,7 +190,7 @@ function ProductManager() {
 
   return (
     <div>
-      <h2>Product Manager</h2>
+      <h2>Quản lý Sản phẩm</h2>
       <div>
         <input
           type="text"
