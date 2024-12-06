@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { db } from "../../firebase";
-import { collection, getDocs, doc, updateDoc, getDoc  } from "firebase/firestore";
-import { Route, useNavigate, Routes, BrowserRouter, Link} from "react-router-dom";
+import { collection, getDocs} from "firebase/firestore";
+import { Route, useNavigate} from "react-router-dom";
 import "./CustomerManager.css"
 function CustomerList() {
     const [customers, setCustomers] = useState([]);
@@ -59,7 +59,7 @@ function CustomerList() {
         <DataTable
           title="Danh sách khách hàng"
           columns={columns}
-          data={customers.filter((customer) => customer)} // Chỉ hiển thị sản phẩm "visible"
+          data={customers.filter((customer) => customer && !customer.isAdmin)} 
           pagination
           highlightOnHover
           paginationComponentOptions={{
