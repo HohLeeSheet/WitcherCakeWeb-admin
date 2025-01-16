@@ -189,7 +189,7 @@ function ProductManager() {
   };
 
   return (
-    <div>
+    <div style={{marginLeft:40}}>
       <h2>Quản lý Sản phẩm</h2>
       <div>
         <input

@@ -118,7 +118,7 @@ const ProductManager = () => {
   ];
 
   return (
-    <div>
+    <div style={{marginLeft:40}}>
       <h2>Quản lý Sản phẩm</h2>
       <Routes>
           <Route path="/products" element={<ProductManager />} />

@@ -104,7 +104,7 @@ function CategoriesManager() {
     };
 
     return (
-        <div style={{marginLeft:"20px"}}>
+        <div style={{marginLeft:40}}>
             <h2>
                 Quản lý Danh mục
             </h2>

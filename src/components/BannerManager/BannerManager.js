@@ -83,7 +83,7 @@ function BannerManager() {
 };
 
   return (
-    <div style={{marginLeft:"20px"}}>
+    <div style={{marginLeft:40}}>
       <h2>Quản lý Banner</h2>
       <div>
         <h4>Chọn ảnh từ file</h4>

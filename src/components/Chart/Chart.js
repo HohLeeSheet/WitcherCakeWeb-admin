@@ -103,7 +103,7 @@ function RevenueManagement() {
   );
 
   return (
-    <div style={{fontFamily: "Arial, sans-serif", boxSizing:"border-box" }}>
+    <div style={{fontFamily: "Arial, sans-serif", boxSizing:"border-box", marginLeft:40 }}>
       <h2 style={{ textAlign: "center", color: "#333", paddingTop:"20px" }}>Thống kê Doanh thu</h2>
 
       {/* Hiển thị biểu đồ */}

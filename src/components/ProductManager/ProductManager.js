@@ -177,7 +177,7 @@ function ProductManager() {
   };
 
   return (
-    <div class="product-container">
+    <div  class="product-container">
       <h2>Quản lý Sản phẩm</h2>
       <div>
         <input
