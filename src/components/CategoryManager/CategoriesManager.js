@@ -155,7 +155,7 @@ function CategoriesManager() {
                     }}
                 />
             </div>
-            {isUploading && <p>Đang tải ảnh lên...</p>}
+            {isUploading && <p>Đang tải ảnh lên....</p>}
             {previewUrl && <img src={previewUrl} alt="Ảnh tạm thời" style={{ width: "200px" }} />}
             <div class="category-container">
                 {categories.map((category) => (
