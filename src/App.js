@@ -13,10 +13,8 @@ import Admin from './components/Admin/Admin';
 import logo from './img/logoCakeVip.png';
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
 import Chart from './components/Chart/Chart';
+import LogOut from './components/Admin/LogOut';
 import './App.css';
-
-
-
 
 function App() {
   const [activeButton, setActiveButton] = useState(null); 
@@ -78,6 +76,14 @@ function App() {
               Thống Kê
             </button>
           </Link>
+          <Link to="/logout">
+            <button
+              className={`nav-btn ${activeButton === 'logout' ? 'active' : ''}`}
+              onClick={() => handleButtonClick('logout')}
+            >
+              Đăng Xuất
+            </button>
+          </Link>
         </nav>
         
         {/* Phần định tuyến */}
@@ -95,7 +101,8 @@ function App() {
           <Route path="/orders" element={<PrivateRoute><CustomerOrder/></PrivateRoute>} />
           <Route path="/pending" element={<PrivateRoute><PendingOrder/></PrivateRoute>} />
           <Route path="/login" element={<Admin/>} />
-          <Route path="/chart" element={<Chart/>} />
+          <Route path="/chart" element={<PrivateRoute><Chart/></PrivateRoute>} />
+          <Route path="/logout" element={<PrivateRoute><LogOut/></PrivateRoute>} />
         </Routes>
       </div>
     </Router>
